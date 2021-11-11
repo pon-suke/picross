@@ -154,7 +154,11 @@ class Block {
     press(button) {
         if (this.x <= mouseX && mouseX <= this.x + this.size && this.y <= mouseY && mouseY <= this.y + this.size) {
             if (button == LEFT) {
-                this.status++;
+                if (this.status != 1) {
+                    this.status = 1;
+                } else {
+                    this.status = 0;
+                }
             } else {
                 if (this.status != 2) {
                     this.status = 2;
