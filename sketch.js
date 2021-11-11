@@ -43,7 +43,7 @@ function setup() {
     for (let i = 0; i < answer.length; i++) {
         blocks[i] = [];
         for (let j = 0; j < answer[i].length; j++) {
-            blocks[i].push(new Block(j, i, size, answer[i][j]));
+            blocks[i].push(new Block(j, i, size, 0));
         }
     }
     background(220);
