@@ -54,7 +54,7 @@ function setup() {
         }
     }
 
-    console.log(size);
+    console.log("unko");
 }
 
 function draw() {
