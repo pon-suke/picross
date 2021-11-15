@@ -53,8 +53,6 @@ function setup() {
             blocks[i][j].display();
         }
     }
-
-    console.log("unko");
 }
 
 function draw() {
