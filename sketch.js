@@ -73,13 +73,12 @@ function draw() {
 
             draw_line();
 
-            
             if (isEqualArray(answer, blocks)) {
                 fill(255, 0, 0);
                 textAlign(CENTER);
                 noStroke();
                 textSize(100);
-                text('霊夢完成！', width / 2, height / 2);
+                text('完成！', width / 2, height / 2);
                 textSize(12);
             }
         }
