@@ -1,2 +1,2 @@
-# myfirst_p5.js
- p5.jsを初めてやります
+# ponsuke.work_picross(reimu)
+ p5.jsでpicrossを作りました，霊夢のやつです
