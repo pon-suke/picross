@@ -16,7 +16,7 @@ var tempRow;
 let answer = [];
 
 function preload() {
-    txt = loadStrings('./marisa.txt');
+    txt = loadStrings('./reimu.txt');
     txt_hint_row = loadStrings('./hint_row.txt');
     txt_hint_column = loadStrings('./hint_column.txt');
 }
