@@ -5,8 +5,8 @@ function contextmenu(e) {
 }
 
 var blocks = [];
-var click = false;
-var first = true;
+//var click = false;
+//var first = true;
 var size = 15;
 
 var windowSize = 0;
@@ -43,7 +43,7 @@ function setup() {
     for (let i = 0; i < answer.length; i++) {
         blocks[i] = [];
         for (let j = 0; j < answer[i].length; j++) {
-            blocks[i].push(new Block(j, i, size, 0));
+            blocks[i].push(new Block(j, i, size, 0, false));
         }
     }
     background(220);
@@ -58,34 +58,39 @@ function setup() {
 
 function draw() {
     if (mouseIsPressed) {
-        if (click == false) {
-            background(220);
+        //if (click == false) {
+        background(220);
 
-            draw_hint();
+        draw_hint();
 
-            for (let i = 0; i < blocks.length; i++) {
-                for (let j = 0; j < blocks[i].length; j++) {
-                    blocks[i][j].press(mouseButton);
-                    blocks[i][j].display();
-                    click = true;
-                }
-            }
-
-            draw_line();
-
-            if (isEqualArray(answer, blocks)) {
-                fill(255, 0, 0);
-                textAlign(CENTER);
-                noStroke();
-                textSize(100);
-                text('完成！', width / 2, height / 2);
-                textSize(12);
+        for (let i = 0; i < blocks.length; i++) {
+            for (let j = 0; j < blocks[i].length; j++) {
+                blocks[i][j].press(mouseButton);
+                blocks[i][j].display();
+                //click = true;
             }
         }
+
+        draw_line();
+
+        if (isEqualArray(answer, blocks)) {
+            fill(255, 0, 0);
+            textAlign(CENTER);
+            noStroke();
+            textSize(100);
+            text('完成！', width / 2, height / 2);
+            textSize(12);
+        }
+        //}
     } else {
-        click = false;
+        for (let i = 0; i < blocks.length; i++) {
+            for (let j = 0; j < blocks[i].length; j++) {
+                blocks[i][j].change_false();
+            }
+        }
+        //click = false;
     }
-    first = false;
+    //first = false;
 }
 
 function draw_hint() {
@@ -112,24 +117,24 @@ function draw_hint() {
         }
     }
 }
-function draw_line(){
-    for (let i = 1; i < blocks.length/5; i++) {
-        for (let j = 1; j < blocks[i].length/5; j++) {
+function draw_line() {
+    for (let i = 1; i < blocks.length / 5; i++) {
+        for (let j = 1; j < blocks[i].length / 5; j++) {
             stroke(0, 255, 255);
-            line(i * size*5 +100, 100, i*size*5+100, blocks[i].length*size+100);
-            line(100, j * size*5+100, blocks.length*size+100, j * size*5+100);
+            line(i * size * 5 + 100, 100, i * size * 5 + 100, blocks[i].length * size + 100);
+            line(100, j * size * 5 + 100, blocks.length * size + 100, j * size * 5 + 100);
         }
     }
-    for (let i = 1; i < blocks.length/10; i++) {
-        for (let j = 1; j < blocks[i].length/10; j++) {
+    for (let i = 1; i < blocks.length / 10; i++) {
+        for (let j = 1; j < blocks[i].length / 10; j++) {
             stroke(255, 0, 0);
-            line(i * size*10 +100, 100, i*size*10+100, blocks[i].length*size+100);
-            line(100, j * size*10+100, blocks.length*size+100, j * size*10+100);
+            line(i * size * 10 + 100, 100, i * size * 10 + 100, blocks[i].length * size + 100);
+            line(100, j * size * 10 + 100, blocks.length * size + 100, j * size * 10 + 100);
         }
     }
     noFill();
     stroke(0);
-    rect(100, 100, blocks.length*size, blocks[0].length*size);
+    rect(100, 100, blocks.length * size, blocks[0].length * size);
 }
 
 function isEqualArray(a, b) {
@@ -145,11 +150,12 @@ function isEqualArray(a, b) {
 }
 
 class Block {
-    constructor(_x, _y, _size, _status) {
+    constructor(_x, _y, _size, _status, _change) {
         this.x = _size * _x + 100;
         this.y = _size * _y + 100;
         this.size = _size;
         this.status = _status;
+        this.change = _change;
     }
 
     display() {
@@ -174,21 +180,28 @@ class Block {
 
     press(button) {
         if (this.x <= mouseX && mouseX <= this.x + this.size && this.y <= mouseY && mouseY <= this.y + this.size) {
-            if (button == LEFT) {
-                if (this.status != 1) {
-                    this.status = 1;
+            if (this.change == false) {
+                if (button == LEFT) {
+                    if (this.status != 1) {
+                        this.status = 1;
+                    } else {
+                        this.status = 0;
+                    }
                 } else {
-                    this.status = 0;
+                    if (this.status != 2) {
+                        this.status = 2;
+                    } else {
+                        this.status = 0;
+                    }
                 }
-            } else {
-                if (this.status != 2) {
-                    this.status = 2;
-                } else {
-                    this.status = 0;
-                }
+                if (this.status > 2) this.status = 0;
+                this.change = true;
             }
-            if (this.status > 2) this.status = 0;
         }
+    }
+
+    change_false(){
+        this.change=false;
     }
 
 }
