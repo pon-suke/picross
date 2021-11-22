@@ -5,8 +5,7 @@ function contextmenu(e) {
 }
 
 var blocks = [];
-//var click = false;
-//var first = true;
+var blocks_last = [];
 var size = 15;
 
 var windowSize = 0;
@@ -46,7 +45,10 @@ function setup() {
             blocks[i].push(new Block(j, i, size, 0, false));
         }
     }
+
+    blocks_last = JSON.parse(JSON.stringify(blocks));
     background(220);
+    draw_undo();
     draw_hint();
     for (let i = 0; i < blocks.length; i++) {
         for (let j = 0; j < blocks[i].length; j++) {
@@ -58,16 +60,18 @@ function setup() {
 
 function draw() {
     if (mouseIsPressed) {
-        //if (click == false) {
+
         background(220);
 
+        draw_undo();
+
         draw_hint();
+
 
         for (let i = 0; i < blocks.length; i++) {
             for (let j = 0; j < blocks[i].length; j++) {
                 blocks[i][j].press(mouseButton);
                 blocks[i][j].display();
-                //click = true;
             }
         }
 
@@ -81,21 +85,42 @@ function draw() {
             text('完成！', width / 2, height / 2);
             textSize(12);
         }
-        //}
     } else {
         for (let i = 0; i < blocks.length; i++) {
             for (let j = 0; j < blocks[i].length; j++) {
                 blocks[i][j].change_false();
             }
         }
-        //click = false;
     }
-    //first = false;
+}
+
+function mousePressed() {
+    if (10 <= mouseX && mouseX <= 90 && 20 <= mouseY && mouseY <= 80) {
+        for (let i = 0; i < blocks.length; i++) {
+            for (let j = 0; j < blocks[i].length; j++) {
+                blocks[i][j].status = blocks_last[i][j].status;
+            }
+        }
+    } else {
+        blocks_last = JSON.parse(JSON.stringify(blocks));
+    }
+}
+
+function draw_undo() {
+    stroke(255);
+    fill(30);
+    rect(10, 20, 80, 60);
+    fill(255);
+    stroke(255);
+    textSize(25);
+    textAlign(CENTER, BASELINE);
+    text("UNDO", 50, 60);
 }
 
 function draw_hint() {
     fill(0);
     stroke(0);
+    textSize(12);
     line(0, 100, 100, 100);
     for (let row = 0; row < txt_hint_row.length; row++) {
         stroke(0);
@@ -117,6 +142,7 @@ function draw_hint() {
         }
     }
 }
+
 function draw_line() {
     for (let i = 1; i < blocks.length / 5; i++) {
         for (let j = 1; j < blocks[i].length / 5; j++) {
@@ -200,8 +226,8 @@ class Block {
         }
     }
 
-    change_false(){
-        this.change=false;
+    change_false() {
+        this.change = false;
     }
 
 }
